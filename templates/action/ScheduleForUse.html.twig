@@ -1,0 +1,189 @@
+{% set title = 'Schedule For Use' %}
+{% extends [settings.template.page, 'page.html.twig'] %}
+
+{% block logo_left %}
+<img src="/assets/img/systems-catalog.png" alt="University Libraries at BGSU Catalog" class="img-responsive" />
+{% endblock %}
+
+{% block content %}
+{{ parent() }}
+
+{% if query %}
+{% if location in ['archives', 'grtlakecoll'] %}
+<p>Please use this form to request access to &ldquo;Library Use Only&rdquo; materials in the Center for Archival Collections on the fifth and sixth floors of Jerome Library; these materials are not taken out of the library or shared via Interlibrary Loan or OhioLINK. Please submit your request at least three business days before your visit. If you are submitting multiple requests, you will only need to fill in your personal information once per browser session.</p>
+{% elseif location == 'list' %}
+<p>Please use this form to request access to library-use-only materials in the Music Library and Bill Schurk Sound Archives on the third floor of Jerome Library; these materials are not taken out of the library or shared via Interlibrary Loan or OhioLINK. Please submit your request at least three business days before your visit. If you are submitting multiple requests, you will only need to fill in your personal information once per browser session.</p>
+{% endif %}
+
+<form method="post">
+    <table>
+    {% for key, value in query %}
+    {% if value and key != 'Status' and key != 'Permalink' %}
+        <tr>
+            <th>
+                {{ key|replace({'_': ' '}) }}
+            </th>
+            <td>
+                {% if key == 'Title' %}
+                    <strong>{{ value }}</strong>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+
+    <div class="row">
+        <div class="col-sm-4 form-group{% if 'name' in errors %} has-error{% endif %}">
+            <label class="control-label" for="name">Your Name</label>
+            {{
+                helper.input({
+                    type: 'text',
+                    name: 'name',
+                    value: session.name,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'name',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-4 form-group{% if 'email' in errors %} has-error{% endif %}">
+            <label class="control-label" for="email">Your Email</label>
+            {{
+                helper.input({
+                    type: 'email',
+                    name: 'email',
+                    value: session.email,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'email',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-4 form-group{% if 'tel' in errors %} has-error{% endif %}">
+            <label class="control-label" for="tel">Your Phone</label>
+            {{
+                helper.input({
+                    type: 'tel',
+                    name: 'tel',
+                    value: session.tel,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'tel',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-6 form-group{% if 'date' in errors %} has-error{% endif %}">
+            <label class="control-label" for="date">When do you plan to arrive?</label>
+            {{
+                helper.input({
+                    type: 'text',
+                    name: 'date',
+                    value: session.date,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'date',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+            <span class="help-block">
+                Your visit will be dependent upon <a href="http://www.bgsu.edu/library/about/library-hours.html" target="_blank">hours of operation</a>, expect an email to confirm your schedule
+            </span>
+        </div>
+        <div class="col-sm-6 form-group{% if 'from' in errors %} has-error{% endif %}">
+            <label class="control-label" for="from">Where are you traveling from?</label>
+            {{
+                helper.input({
+                    type: 'text',
+                    name: 'from',
+                    value: session.from,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'from',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+            <span class="help-block">
+                Include city and state or country
+            </span>
+        </div>
+
+        <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
+            <label class="control-label" for="comments">Comments (include any special instructions)</label>
+
+            {% if location in ['archives', 'grtlakecoll'] %}
+            <p class="text-muted">If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</p>
+            {% elseif location == 'list' %}
+            <p class="text-muted">If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</p>
+            {% endif %}
+
+            {{
+                helper.input({
+                    type: 'textarea',
+                    name: 'comments',
+                    value: session.comments,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'comments'
+                    }
+                })
+                |raw
+            }}
+        </div>
+    </div>
+    {{
+        helper.input({
+            type: 'submit',
+            name: false,
+            value: 'Send Request',
+            attribs: {class: 'btn btn-primary'}
+        })
+        |raw
+    }}
+    {{ csrf_hidden|raw }}
+</form>
+{% elseif messages is empty %}
+    Please select a catalog item to schedule for use.
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block styles %}
+{{ parent() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.3.4/flatpickr.min.css">
+<link rel="stylesheet" href="{{ base_url() }}/css/form.css">
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.3.4/flatpickr.min.js"></script>
+<script>
+jQuery('#date').flatpickr({
+    altFormat: 'F j, Y',
+    altInput: true,
+    enable: [
+        function (date) {
+            return date.getDay() > 0 && date.getDay() < 6;
+        }
+    ],
+    minDate: '{{ "+3 weekdays"|date("Y-m-d") }}'
+});
+</script>
+{% endblock %}

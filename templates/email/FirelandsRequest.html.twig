@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            h1,p,table{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;margin:0 0 10px 0}
+            table{border-collapse:collapse;border-spacing:0;width:100%}
+            td,th{padding:0.25em 0.5em;vertical-align:top}
+            th{background:#e7e7e7;border-bottom:2px solid #fff;font-weight:normal;text-align:left;width:20%}
+        </style>
+    </head>
+    <body>
+        <h1>Firelands Request</h1>
+        <table>
+            {% for key, value in query %}
+            {% if value and key != 'Status' %}
+                <tr>
+                    <th>
+                        {{ key|replace({'_': ' '}) }}
+                    </th>
+                    <td>
+                        {% if key == 'Title' %}
+                            <strong>{{ value }}</strong>
+                        {% elseif key == 'Permalink' %}
+                            <a href="{{ value }}">{{ value }}</a>
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <table>
+            <tr>
+                <th>Name</th>
+                <td>{{ session.name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><a href="mailto:{{ session.email }}">{{ session.email }}</a></td>
+            </tr>
+            <tr>
+                <th>BGSU ID</th>
+                <td>{{ session.id }}</td>
+            </tr>
+            {% if session.comments %}
+            <tr>
+                <th>Comments</th>
+                <td>{{ session.comments }}</td>
+            </tr>
+            {% endif %}
+        </table>
+        <p>If you do not receive a response, please contact <a href="mailto:{{ email }}">{{ email }}</a> for assistance.</p>
+    </body>
+</html>

@@ -1,0 +1,119 @@
+{% set title = 'Firelands Request' %}
+{% extends [settings.template.page, 'page.html.twig'] %}
+
+{% block logo_left %}
+<img src="/assets/img/systems-catalog.png" alt="University Libraries at BGSU Catalog" class="img-responsive" />
+{% endblock %}
+
+{% block content %}
+{{ parent() }}
+
+{% if query %}
+<form method="post">
+    <table>
+    {% for key, value in query %}
+    {% if value and key != 'Status' and key != 'Permalink' %}
+        <tr>
+            <th>
+                {{ key|replace({'_': ' '}) }}
+            </th>
+            <td>
+                {% if key == 'Title' %}
+                    <strong>{{ value }}</strong>
+                {% else %}
+                    {{ value }}
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+    {% endfor %}
+    </table>
+
+    <div class="row">
+        <div class="col-sm-4 form-group{% if 'name' in errors %} has-error{% endif %}">
+            <label class="control-label" for="name">Your Name</label>
+            {{
+                helper.input({
+                    type: 'text',
+                    name: 'name',
+                    value: session.name,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'name',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-4 form-group{% if 'email' in errors %} has-error{% endif %}">
+            <label class="control-label" for="email">Your Email</label>
+            {{
+                helper.input({
+                    type: 'email',
+                    name: 'email',
+                    value: session.email,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'email',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-4 form-group{% if 'id' in errors %} has-error{% endif %}">
+            <label class="control-label" for="id">Your BGSU ID Number</label>
+            {{
+                helper.input({
+                    type: 'text',
+                    name: 'id',
+                    value: session.id,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'id',
+                        required: true
+                    }
+                })
+                |raw
+            }}
+        </div>
+        <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
+            <label class="control-label" for="comments">Comments</label>
+            {{
+                helper.input({
+                    type: 'textarea',
+                    name: 'comments',
+                    value: session.comments,
+                    attribs: {
+                        class: 'form-control',
+                        id: 'comments'
+                    }
+                })
+                |raw
+            }}
+        </div>
+    </div>
+    {{
+        helper.input({
+            type: 'submit',
+            name: false,
+            value: 'Send Request',
+            attribs: {class: 'btn btn-primary'}
+        })
+        |raw
+    }}
+    {{ csrf_hidden|raw }}
+</form>
+{% elseif messages is empty %}
+    Please select a catalog item to request at Firelands.
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block styles %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ base_url() }}/css/form.css">
+{% endblock %}

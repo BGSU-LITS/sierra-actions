@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            h1,p,table{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;margin:0 0 10px 0}
+            table{border-collapse:collapse;border-spacing:0;width:100%}
+            td,th{padding:0.25em 0.5em;vertical-align:top}
+            th{background:#e7e7e7;border-bottom:2px solid #fff;font-weight:normal;text-align:left;width:20%}
+        </style>
+    </head>
+    <body>
+        <h1>Schedule For Use</h1>
+        <table>
+            {% for key, value in query %}
+            {% if value and key != 'Status' %}
+                <tr>
+                    <th>
+                        {{ key|replace({'_': ' '}) }}
+                    </th>
+                    <td>
+                        {% if key == 'Title' %}
+                            <strong>{{ value }}</strong>
+                        {% elseif key == 'Permalink' %}
+                            <a href="{{ value }}">{{ value }}</a>
+                        {% else %}
+                            {{ value }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+        <table>
+            <tr>
+                <th>Name</th>
+                <td>{{ session.name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><a href="mailto:{{ session.email }}">{{ session.email }}</a></td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ session.tel }}</td>
+            </tr>
+            <tr>
+                <th>Plans to Arrive</th>
+                <td>{{ session.date|date('F j, Y') }}</td>
+            </tr>
+            <tr>
+                <th>Traveling From</th>
+                <td>{{ session.from }}</td>
+            </tr>
+            {% if session.comments %}
+            <tr>
+                <th>Comments</th>
+                <td>{{ session.comments }}</td>
+            </tr>
+            {% endif %}
+        </table>
+        {% if location in ['archives', 'grtlakecoll'] %}
+        <p>Thank you for your interest in the Center for Archival Collections. We look forward to meeting you! Please wait for a response before you visit to ensure that we are open on the day of your proposed visit and have received your request. If you do not receive a response within two business days, please contact us at <a href="mailto:archive@bgsu.edu">archive@bgsu.edu</a> or 419-372-2411.</p>
+        {% else %}
+        <p>Please wait for a response from the library before visiting. If you do not receive a response, please contact <a href="mailto:{{ email }}">{{ email}}</a> for assistance. You may want to review our <a href="http://www.bgsu.edu/library/special-collections-and-libraries/visitingscholars.html">information for visiting scholars</a>.</p>
+        {% endif %}
+    </body>
+</html>

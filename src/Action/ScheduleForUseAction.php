@@ -148,7 +148,7 @@ class ScheduleForUseAction extends AbstractAction
         // Check to see if any of the Locations and Status match what is
         // specified. If so, return the key of that location.
         foreach ($this->locations as $key => $value) {
-            if ($value['title'] === $query['Location']
+            if (preg_match($value['title'], $query['Location'])
              && $value['status'] === $query['Status']) {
                 return $key;
             }
@@ -195,7 +195,7 @@ class ScheduleForUseAction extends AbstractAction
         }
 
         // Set the recipient email to the address from the location.
-        $mailTo = [$location['email'] => $location['title']];
+        $mailTo = $location['email'];
 
         // Set the sender email from the session data.
         $mailFrom = [$args['session']['email'] => $args['session']['name']];

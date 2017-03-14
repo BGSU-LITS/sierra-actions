@@ -1,19 +1,16 @@
 // Base URL to various Map It resources.
 var mapit_baseurl = '{{ base_url() }}';
 
-// Defines status for a location to receive a button.
-var mapit_status = {
+// Defines status and action for a location to receive a button.
+var mapit_locations = [
 {% for location in settings.locations %}
-    '{{ location.title }}': '{{ location.status }}'{{ loop.last ? '' : ',' }}
+    {
+        title: {{ location.title }},
+        status: '{{ location.status }}',
+        action: '{{ location.action }}'
+    }{{ loop.last ? '' : ',' }}
 {% endfor %}
-};
-
-// Defines the action for the button added to a location.
-var mapit_action = {
-{% for location in settings.locations %}
-    '{{ location.title }}': '{{ location.action }}'{{ loop.last ? '' : ',' }}
-{% endfor %}
-};
+];
 
 // Select all bib items available on the page.
 jQuery('.bibItems tr.bibItemsEntry')
@@ -72,11 +69,12 @@ jQuery('.bibItems tr.bibItemsEntry')
         );
     }
 
-    if (mapit_status.hasOwnProperty(text['Location'])) {
-        if (mapit_status[text['Location']] === text['Status']) {
-            // If the item has a location, and that location has the correct
-            // status, create a slug of the action for the button.
-            var action = mapit_action[text['Location']]
+    for (var count = 0; count < mapit_locations.length; count++) {
+        if (text['Location'].match(mapit_locations[count]['title'])
+         && text['Status'] === mapit_locations[count]['status']) {
+            // If the item matches a location title and status,
+            // create a slug of the action for the button.
+            var action = mapit_locations[count]['action']
                 .toLowerCase()
                 .replace(/[^\w\-]+/g, '-');
 
@@ -107,7 +105,7 @@ jQuery('.bibItems tr.bibItemsEntry')
                     '<img src="' +
                         mapit_baseurl + '/images/btn_' +
                         action + '.png" alt="' +
-                        mapit_action[text['Location']] + '">' +
+                        mapit_locations[count]['action'] + '">' +
                     '</a>'
                 );
             }

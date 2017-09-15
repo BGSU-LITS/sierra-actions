@@ -55,19 +55,17 @@ These settings are primarly included to enable the use of a centralized collecti
 #### Actions
 `actions` is a hash specifying the individual actions that are handled by the application, specific to the locations and statuses of items. The key of each hash item may be used within templates. The value is itself a hash specified as so:
 
-- `action`: The full name of the action, both displayed to the user and controlling the application.
+- `action`: The full name of the action. Besides being displayed to the user, this also defines the URIs to the form (after lowercased and replacing whitespace with dashes) and the file names of the action classes and templates (after removing whitespace).
 - `location`: A Javascript-style regular expression that matches the location of the item within the WebPAC display. If you only want to match one location, you can just pin that location to the begginning and end of the regular expressions, ie. `^Location$`.
 - `status`: A Javascript-style regular expression that matches the status of the item within the WebPAC display. If you only want to match one status, you can just pin that status to the begginning and end of the regular expressions, ie. `^Status$`.
 - `button`: HTML to be included within the anchor element used within the WebPAC. If left undefined, the `action` will be used. An example usage is for specfying an image element for the button.
 - `email`: The email address that submissions to this action will be sent to.
 
+### Web Server
+The `public/` directory is what needs to be served by your web server. BGSU accomplishes this by creating a soft link to `public/` within the server's document root, for example:
+```
+cd /path/to/htdocs
+ln -s ../path/to/application/public actions
+```
 
-
-
-
-
-
-
-
-
-
+You may also consult the documentation of you server for alternative ways of serving specific directories.

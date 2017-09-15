@@ -16,10 +16,21 @@ use Swift_Mailer;
 
 // Index action.
 $container[IndexAction::class] = function (Container $container) {
-    return new IndexAction($container['settings']['redirect']);
+    return new IndexAction($container['settings']['app']['redirect']);
 };
 
 $app->get('/', IndexAction::class);
+
+// Javascript action.
+$container[JsAction::class] = function (Container $container) {
+    return new JsAction(
+        $container[Messages::class],
+        $container[Session::class],
+        $container[Twig::class]
+    );
+};
+
+$app->get('/button.js', JsAction::class);
 
 // Schedule For Use action.
 $container[ScheduleForUseAction::class] = function (Container $container) {
@@ -28,7 +39,7 @@ $container[ScheduleForUseAction::class] = function (Container $container) {
         $container[Session::class],
         $container[Twig::class],
         $container[Swift_Mailer::class],
-        $container['settings']['locations']
+        $container['settings']['actions']
     );
 };
 
@@ -41,19 +52,8 @@ $container[FirelandsRequestAction::class] = function (Container $container) {
         $container[Session::class],
         $container[Twig::class],
         $container[Swift_Mailer::class],
-        $container['settings']['locations']
+        $container['settings']['actions']
     );
 };
 
 $app->map(['GET', 'POST'], '/firelands-request', FirelandsRequestAction::class);
-
-// MapIt Javascript action.
-$container[Js\MapItAction::class] = function (Container $container) {
-    return new Js\MapItAction(
-        $container[Messages::class],
-        $container[Session::class],
-        $container[Twig::class]
-    );
-};
-
-$app->get('/js/mapit.js', Js\MapItAction::class);

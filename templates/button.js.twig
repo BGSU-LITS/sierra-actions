@@ -1,0 +1,77 @@
+// Details for each action.
+var actions = [
+{% for action in settings.actions %}
+    {
+        action: '{{ action.action | raw }}',
+        location: new RegExp('{{ action.location | raw }}'),
+        status: new RegExp('{{ action.status | raw }}'),
+        button: '{{ (action.button ?: action.action) | raw }}'
+    }{{ loop.last ? '' : ',' }}
+{% endfor %}
+];
+
+// Select all bib items available on the page.
+jQuery('.bibItems .bibItemsEntry')
+.on('click', '.action-button', function() {
+    // Set any action button to load a popup window when clicked.
+    window.open(
+        this.href,
+        'action',
+        'width=800,height=650,menubar=1,resizable=1,scrollbars=1'
+    );
+
+    return false;
+})
+.each(function() {
+    // Loop through each bib item.
+    var element = jQuery(this), cell = {}, text = {},
+        keys = ['Location', 'Call Number', 'Volume', 'Status'];
+
+    // Remove Volume from list of keys if that table column doesn't exist.
+    if (element.find('td').length === 3) {
+        keys.splice(2, 1);
+    }
+
+    // Retrieve the cell and text from the cell for each column.
+    for (var count = 0; count < keys.length; count++) {
+        cell[keys[count]] = element.find('td:nth-child(' + (count + 1) + ')');
+        text[keys[count]] = jQuery.trim(cell[keys[count]].text());
+    }
+
+    // Loop through each action.
+    for (var count = 0; count < actions.length; count++) {
+        if (text['Location'].match(actions[count]['location'])
+         && text['Status'].match(actions[count]['status'])) {
+            // If the item matches a location and status,
+            // create a slug of the action for the button.
+            var action = actions[count]['action']
+                .toLowerCase()
+                .replace(/[^\w\-]+/g, '-');
+
+            // Retrieve the Permalink for the item from elsewhere on the page.
+            text['Permalink'] = jQuery.trim(jQuery('#permalink a').text());
+
+            if (text['Permalink']) {
+                // If the Permalink is available, an action can be peformed
+                // with the record, so pull in the rest of the records data
+                // from elsewhere on the page.
+                jQuery('#bibDisplayWrapper .bibInfoEntry tr').each(function() {
+                    var key = jQuery.trim(
+                        jQuery('.bibInfoLabel', this).text().replace(/:/, '')
+                    );
+
+                    text[key] = jQuery.trim(
+                        jQuery('.bibInfoData', this).text()
+                    );
+                });
+
+                // Append the action button to the status cell.
+                cell['Status'].append(
+                    '&nbsp;<a href="{{ base_url() }}/' + action + '?' +
+                    jQuery.param(text) + '" class="action-button">' +
+                    actions[count]['button'] + '</a>'
+                );
+            }
+        }
+    }
+});

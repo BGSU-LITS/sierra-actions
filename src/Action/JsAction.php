@@ -1,20 +1,20 @@
 <?php
 /**
- * JS Map It Action Class
+ * JS Action Class
  * @author John Kloor <kloor@bgsu.edu>
  * @copyright 2017 Bowling Green State University Libraries
  * @license MIT
  */
 
-namespace App\Action\Js;
+namespace App\Action;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 /**
- * An class for the JS Map It action.
+ * A class for the JS action.
  */
-class MapItAction extends \App\Action\AbstractAction
+class JsAction extends \App\Action\AbstractAction
 {
     /**
      * Method called when class is invoked as an action.
@@ -31,7 +31,7 @@ class MapItAction extends \App\Action\AbstractAction
         // Render form template.
         return $this->view->render(
             $res->withHeader('Content-Type', 'application/javascript'),
-            'js/mapit.js.twig',
+            'button.js.twig',
             $args
         );
     }

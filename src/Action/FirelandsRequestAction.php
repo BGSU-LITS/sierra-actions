@@ -19,16 +19,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 /**
- * An class for the Firelands Request action.
+ * A class for the Firelands Request action.
  */
 class FirelandsRequestAction extends ScheduleForUseAction
 {
-    /**
-     * The display name of this action.
-     * @var string
-     */
-    protected $action = 'Firelands Request';
-
     /**
      * The field names used by this action.
      * @var array

@@ -17,7 +17,7 @@ $container['errorHandler'] = function (Container $container) {
     return new ErrorHandler(
         $container[LoggerInterface::class],
         $container[Twig::class],
-        $container['settings']['debug']
+        $container['settings']['app']['debug']
     );
 };
 

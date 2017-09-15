@@ -34,15 +34,15 @@ $container[LoggerInterface::class] = function (Container $container) {
     $logger = new \Monolog\Logger('app');
 
     // If a log file was specified, add handler for that file to logger.
-    if ($container['settings']['log']) {
+    if ($container['settings']['app']['log']) {
         // Create stream handler for the specified log path.
         $handler = new \Monolog\Handler\StreamHandler(
-            $container['settings']['log']
+            $container['settings']['app']['log']
         );
 
         // Format the handler to only include stacktraces if in debug mode.
         $formatter = new \Monolog\Formatter\LineFormatter();
-        $formatter->includeStacktraces($container['settings']['debug']);
+        $formatter->includeStacktraces($container['settings']['app']['debug']);
         $handler->setFormatter($formatter);
 
         // Add web information to handler, and add handler to logger.
@@ -77,7 +77,7 @@ $container[Twig::class] = function (Container $container) {
     $options = [
         'auto_reload' => true,
         'cache' => dirname(__DIR__) . '/cache',
-        'debug' => $container['settings']['debug']
+        'debug' => $container['settings']['app']['debug']
     ];
 
     // Create Twig view and make package settings available.

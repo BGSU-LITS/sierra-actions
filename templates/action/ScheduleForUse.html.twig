@@ -9,9 +9,9 @@
 {{ parent() }}
 
 {% if query %}
-{% if location == 'cac' %}
+{% if action == 'cac' %}
 <p>Please use this form to request access to &ldquo;Library Use Only&rdquo; materials in the Center for Archival Collections on the fifth and sixth floors of Jerome Library; these materials are not taken out of the library or shared via Interlibrary Loan or OhioLINK. Please submit your request at least three business days before your visit. If you are submitting multiple requests, you will only need to fill in your personal information once per browser session.</p>
-{% elseif location == 'mlbssa' %}
+{% elseif action == 'mlbssa' %}
 <p>Please use this form to request access to library-use-only materials in the Music Library and Bill Schurk Sound Archives on the third floor of Jerome Library; these materials are not taken out of the library or shared via Interlibrary Loan or OhioLINK. Please submit your request at least three business days before your visit. If you are submitting multiple requests, you will only need to fill in your personal information once per browser session.</p>
 {% endif %}
 
@@ -126,9 +126,9 @@
         <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
             <label class="control-label" for="comments">Comments (include any special instructions)</label>
 
-            {% if location == 'cac' %}
+            {% if action == 'cac' %}
             <p class="text-muted">If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</p>
-            {% elseif location == 'mlbssa' %}
+            {% elseif action == 'mlbssa' %}
             <p class="text-muted">If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</p>
             {% endif %}
 

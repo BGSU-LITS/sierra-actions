@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 /**
- * An class for the schedule for use action.
+ * A class for the schedule for use action.
  */
 class ScheduleForUseAction extends AbstractAction
 {
@@ -30,16 +30,10 @@ class ScheduleForUseAction extends AbstractAction
     private $mailer;
 
     /**
-     * Locations served by action buttons.
+     * Actions handled by the application.
      * @var array
      */
-    private $locations;
-
-    /**
-     * The display name of this action.
-     * @var string
-     */
-    protected $action = 'Schedule For Use';
+    private $actions;
 
     /**
      * The field names used by this action.
@@ -47,16 +41,24 @@ class ScheduleForUseAction extends AbstractAction
      */
     protected $fields = ['name', 'email', 'tel', 'from', 'date', 'comments'];
 
+    /**
+     * Construct the action with objects and configuration.
+     * @param Messages $flash Flash messenger.
+     * @param Session $session Session manager.
+     * @param Twig $view View renderer.
+     * @param Swift_Mailer Email sender.
+     * @param array $actions Actions handled by the application.
+     */
     public function __construct(
         Messages $flash,
         Session $session,
         Twig $view,
         Swift_Mailer $mailer,
-        array $locations
+        array $actions
     ) {
         parent::__construct($flash, $session, $view);
         $this->mailer = $mailer;
-        $this->locations = $locations;
+        $this->actions = $actions;
     }
 
     /**
@@ -68,17 +70,27 @@ class ScheduleForUseAction extends AbstractAction
      */
     public function __invoke(Request $req, Response $res, array $args)
     {
+        // Set the default template for the action.
+        $template = 'action/ScheduleForUse.html.twig';
+
         // Add flash messages to arguments.
         $args['messages'] = $this->messages();
 
         // Add any query parameters to the arguments.
         $args['query'] = $req->getQueryParams();
 
-        // Add current location to arguments based on query.
-        $args['location'] = $this->getLocation($args['query']);
+        // Add current action to arguments based on query.
+        $args['action'] = $this->getAction($args['query']);
 
-        // Check if a location was provided.
-        if (!empty($args['location'])) {
+        // Check if an action was provided.
+        if (!empty($args['action'])) {
+            // Get the data about the current action.
+            $action = $this->actions[$args['action']];
+
+            // Get the template for the current action.
+            $template = 'action/' .
+                preg_replace('/\s+/', '', $action['action']) . '.html.twig';
+
             // Check if a POST form was submitted.
             if ($req->getMethod() === 'POST') {
                 // Add values from all form fields to arguments.
@@ -87,7 +99,7 @@ class ScheduleForUseAction extends AbstractAction
                 }
 
                 // Store the values from all form fields to the session.
-                $this->session->catalog_schedule = $args['session'];
+                $this->session->actions_schedule = $args['session'];
 
                 try {
                     // Validate and send the request.
@@ -115,28 +127,25 @@ class ScheduleForUseAction extends AbstractAction
                     ];
                 }
             }
+        }
 
-            // Add any session data to the arguments if no form was submitted.
-            if (empty($args['session'])) {
-                if (!empty($this->session->catalog_schedule)) {
-                    $args['session'] = $this->session->catalog_schedule;
-                }
+        // Add any session data to the arguments if no form was submitted.
+        if (empty($args['session'])) {
+            if (!empty($this->session->actions_schedule)) {
+                $args['session'] = $this->session->actions_schedule;
             }
         }
 
-        // Render template based on action.
-        $template = 'action/' . preg_replace('/\s+/', '', $this->action) .
-            '.html.twig';
-
+        // Render the template.
         return $this->view->render($res, $template, $args);
     }
 
     /**
-     * Get the current location from the query.
+     * Get the current action from the query.
      * @param array $query The query data.
-     * @return string|false The current location, or false if none is selected.
+     * @return string|false The current action, or false if none is selected.
      */
-    protected function getLocation(array $query)
+    protected function getAction(array $query)
     {
         // Make sure Permalink, Location, and Status are specified.
         foreach (['Permalink', 'Location', 'Status'] as $key) {
@@ -145,11 +154,11 @@ class ScheduleForUseAction extends AbstractAction
             }
         }
 
-        // Check to see if any of the Locations and Status match what is
-        // specified. If so, return the key of that location.
-        foreach ($this->locations as $key => $value) {
-            if (preg_match($value['title'], $query['Location'])
-             && $value['status'] === $query['Status']) {
+        // Check to see if any of the actions match what is
+        // specified. If so, return the key of that action.
+        foreach ($this->actions as $key => $value) {
+            if (preg_match('/' . $value['location'] . '/', $query['Location'])
+             && preg_match('/' . $value['status'] . '/', $query['Status'])) {
                 return $key;
             }
         }
@@ -170,17 +179,17 @@ class ScheduleForUseAction extends AbstractAction
             $args['query']['Permalink']
         );
 
-        // Add current location to arguments based on query.
-        $args['location'] = $this->getLocation($args['query']);
+        // Add current action to arguments based on query.
+        $args['action'] = $this->getAction($args['query']);
 
-        // Get the data about the current location.
-        $location = $this->locations[$args['location']];
+        // Get the data about the current action.
+        $action = $this->actions[$args['action']];
 
-        // Add the email from that location to the arguments.
-        $args['email'] = $location['email'];
+        // Add the email from that action to the arguments.
+        $args['email'] = $action['email'];
 
         // Set the subject to the current action.
-        $mailSubject = $this->action;
+        $mailSubject = $action['action'];
 
         // Add the date of the action to the subject if available.
         if (!empty($args['session']['date'])) {
@@ -194,17 +203,17 @@ class ScheduleForUseAction extends AbstractAction
                 $args['query']['Title'];
         }
 
-        // Set the recipient email to the address from the location.
-        $mailTo = $location['email'];
+        // Set the recipient email to the address from the action.
+        $mailTo = $action['email'];
 
         // Set the sender email from the session data.
         $mailFrom = [$args['session']['email'] => $args['session']['name']];
 
-        try {
-            // Get the template for the current action.
-            $template = 'email/' . preg_replace('/\s+/', '', $this->action) .
-                '.html.twig';
+        // Get the template for the current action.
+        $template = 'email/' .
+            preg_replace('/\s+/', '', $action['action']) . '.html.twig';
 
+        try {
             // Create a message with all of the provided data.
             $message = $this->mailer->createMessage()
                 ->setSubject($mailSubject)

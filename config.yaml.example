@@ -1,0 +1,76 @@
+# Application settings.
+app:
+  # Whether to enable debug information.
+  debug: false
+  # Path to log file, if any.
+  log:
+  # URI to redirect to for unfulfilled requests.
+  redirect: 'https://example.edu/'
+
+# Template settings.
+template:
+  # Path to search for templates before this package's templates.
+  path:
+  # Filename of template that defines a page. Default: page.html.twig
+  page:
+
+# SMTP settings.
+smtp:
+  # Server hostname.
+  host: 'smtp.example.edu'
+  # Server port number. Default: 25
+  port: 25
+
+# Actions handled by the application, keyed by a unique value.
+actions:
+  # Schedule For Use - Browne Popular Culture Library
+  bpcl:
+    # Name of the action.
+    action: 'Schedule For Use'
+    # Regular expression matching location of items.
+    location: '^(DVDs|Pop Cult ((Bravard )?Comics|(Guymon |Big Little )?Books|microforms|Oversize|Pulps|Periodicals|Fanzines|Special Collections))$'
+    # Regular expression matching status of items.
+    status: '^Lib Use Only$'
+    # HTML to use within the link to the action. Default is the action name.
+    button: 'Schedule For Use'
+    # Email address of recipient of the action.
+    email: 'pcldesk@example.edu'
+
+  # Schedule For Use - Center for Archival Collections
+  cac:
+    # Name of the action.
+    action: 'Schedule For Use'
+    # Regular expression matching location of items.
+    location: '^(Archives|Great Lakes Collection)$'
+    # Regular expression matching status of items.
+    status: '^Lib Use Only$'
+    # HTML to use within the link to the action. Default is the action name.
+    button: 'Schedule For Use'
+    # Email address of recipient of the action.
+    email: 'archive@example.edu'
+
+  # Schedule For Use - Music Library and Bill Schurk Sound Archives
+  mlbssa:
+    # Name of the action.
+    action: 'Schedule For Use'
+    # Regular expression matching location of items.
+    location: '^Music Closed Stacks$'
+    # Regular expression matching status of items.
+    status: '^Lib Use Only$'
+    # HTML to use within the link to the action. Default is the action name.
+    button: 'Schedule For Use'
+    # Email address of recipient of the action.
+    email: 'mlsra@example.edu'
+
+  # Firelands Request - Curriculum Resource Center
+  crc:
+    # Name of the action.
+    action: 'Firelands Request'
+    # Regular expression matching location of items.
+    location: '^CRC Teaching Aids$'
+    # Regular expression matching status of items.
+    status: '^Available$'
+    # HTML to use within the link to the action. Default is the action name.
+    button: 'Firelands Request'
+    # Email address of recipient of the action.
+    email: 'crc@example.edu'

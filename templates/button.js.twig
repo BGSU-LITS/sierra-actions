@@ -12,16 +12,6 @@ var actions = [
 
 // Select all bib items available on the page.
 jQuery('.bibItems .bibItemsEntry')
-.on('click', '.action-button', function() {
-    // Set any action button to load a popup window when clicked.
-    window.open(
-        this.href,
-        'action',
-        'width=800,height=650,menubar=1,resizable=1,scrollbars=1'
-    );
-
-    return false;
-})
 .each(function() {
     // Loop through each bib item.
     var element = jQuery(this), cell = {}, text = {},
@@ -42,12 +32,6 @@ jQuery('.bibItems .bibItemsEntry')
     for (var count = 0; count < actions.length; count++) {
         if (text['Location'].match(actions[count]['location'])
          && text['Status'].match(actions[count]['status'])) {
-            // If the item matches a location and status,
-            // create a slug of the action for the button.
-            var action = actions[count]['action']
-                .toLowerCase()
-                .replace(/[^\w\-]+/g, '-');
-
             // Retrieve the Permalink for the item from elsewhere on the page.
             text['Permalink'] = jQuery.trim(jQuery('#permalink a').text());
 
@@ -65,13 +49,29 @@ jQuery('.bibItems .bibItemsEntry')
                     );
                 });
 
+                // Create a slug of the action for the button.
+                var action = actions[count]['action']
+                    .toLowerCase()
+                    .replace(/[^\w\-]+/g, '-');
+
                 // Append the action button to the status cell.
                 cell['Status'].append(
-                    '&nbsp;<a href="{{ base_url() }}/' + action + '?' +
+                    '&nbsp;<a href="{{ base_url() }}/' +
+                    action + '?' +
                     jQuery.param(text) + '" class="action-button">' +
                     actions[count]['button'] + '</a>'
                 );
             }
         }
     }
+})
+.on('click', '.action-button', function() {
+    // Set any action button to load a popup window when clicked.
+    window.open(
+        this.href,
+        'action',
+        'width=800,height=650,menubar=1,resizable=1,scrollbars=1'
+    );
+
+    return false;
 });

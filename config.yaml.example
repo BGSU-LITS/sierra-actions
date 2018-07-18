@@ -35,6 +35,8 @@ actions:
     button: 'Schedule For Use'
     # Email address of recipient of the action.
     email: 'pcldesk@example.edu'
+    # Request window as string compatible with https://php.net/strtotime
+    window: '+3 weekdays'
 
   # Schedule For Use - Center for Archival Collections
   cac:
@@ -48,6 +50,8 @@ actions:
     button: 'Schedule For Use'
     # Email address of recipient of the action.
     email: 'archive@example.edu'
+    # Request window as string compatible with https://php.net/strtotime
+    window: '+3 weekdays'
 
   # Schedule For Use - Music Library and Bill Schurk Sound Archives
   mlbssa:
@@ -61,6 +65,8 @@ actions:
     button: 'Schedule For Use'
     # Email address of recipient of the action.
     email: 'mlsra@example.edu'
+    # Request window as string compatible with https://php.net/strtotime
+    window: '+3 weekdays'
 
   # Firelands Request - Curriculum Resource Center
   crc:
@@ -74,3 +80,6 @@ actions:
     button: 'Firelands Request'
     # Email address of recipient of the action.
     email: 'crc@example.edu'
+    # Request window as string compatible with https://php.net/strtotime
+    window:
+

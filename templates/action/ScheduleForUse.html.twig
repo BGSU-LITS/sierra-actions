@@ -9,9 +9,9 @@
 {{ parent() }}
 
 {% if query %}
-{% if action == 'cac' %}
+{% if action == 'cac' or action == 'cac_offsite' %}
 <p>Please use this form to request access to &ldquo;Library Use Only&rdquo; materials from the &ldquo;Archives&rdquo; and &ldquo;Great Lakes Collection.&rdquo; These materials are accessible in person only at the Center for Archival Collections, 5<sup>th</sup> Floor Jerome Library; they are not taken out of the library nor shared via OhioLINK.</p>
-{% elseif action == 'mlbssa' %}
+{% elseif action == 'mlbssa' or action == 'mlbssa_offsite' %}
 <p>Please use this form to request access to library-use-only materials in the Music Library and Bill Schurk Sound Archives on the third floor of Jerome Library; these materials are not taken out of the library or shared via Interlibrary Loan or OhioLINK. Please submit your request at least three business days before your visit. If you are submitting multiple requests, you will only need to fill in your personal information once per browser session.</p>
 <p>This form is for the convenience of visiting researchers planning to use the collections; on-site researchers are always welcome to make same-day requests in person at the Music Service desk during our regular hours.</p>
 {% endif %}
@@ -127,9 +127,9 @@
         <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
             <label class="control-label" for="comments">Comments (include any special instructions)</label>
 
-            {% if action == 'cac' %}
+            {% if action == 'cac' or action == 'cac_offsite' %}
             <p class="text-muted">If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</p>
-            {% elseif action == 'mlbssa' %}
+            {% elseif action == 'mlbssa' or action == 'mlbssa_offsite' %}
             <p class="text-muted">If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</p>
             {% endif %}
 
@@ -184,7 +184,7 @@ jQuery('#date').flatpickr({
             return date.getDay() > 0 && date.getDay() < 6;
         }
     ],
-    minDate: '{{ "+3 weekdays"|date("Y-m-d") }}'
+    minDate: '{{ window|date("Y-m-d") }}'
 });
 </script>
 {% endblock %}

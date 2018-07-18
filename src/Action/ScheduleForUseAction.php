@@ -87,6 +87,9 @@ class ScheduleForUseAction extends AbstractAction
             // Get the data about the current action.
             $action = $this->actions[$args['action']];
 
+            // Set the request window for the action.
+            $args['window'] = $action['window'];
+
             // Get the template for the current action.
             $template = 'action/' .
                 preg_replace('/\s+/', '', $action['action']) . '.html.twig';
@@ -273,7 +276,7 @@ class ScheduleForUseAction extends AbstractAction
         }
 
         // Check that the date is at least three week days in the future.
-        if (strtotime($args['session']['date']) < strtotime('+3 weekdays')) {
+        if (strtotime($args['session']['date']) < strtotime($args['window'])) {
             $args['errors'][] = 'date';
 
             throw new RequestException(

@@ -58,7 +58,7 @@
             </tr>
             {% endif %}
         </table>
-        {% if action == 'cac' %}
+        {% if action == 'cac' or action == 'cac_offsite' %}
         <p>Thank you for your interest in the Center for Archival Collections. We look forward to meeting you! Please wait for a response before you visit to ensure that we are open on the day of your proposed visit and have received your request. If you do not receive a response within two business days, please contact us at <a href="mailto:archive@bgsu.edu">archive@bgsu.edu</a> or 419-372-2411.</p>
         {% else %}
         <p>Please wait for a response from the library before visiting. If you do not receive a response, please contact <a href="mailto:{{ email }}">{{ email}}</a> for assistance. You may want to review our <a href="http://www.bgsu.edu/library/special-collections-and-libraries/visitingscholars.html">information for visiting scholars</a>.</p>

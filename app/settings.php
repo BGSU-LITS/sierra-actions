@@ -16,7 +16,10 @@ $settings = [
         'debug' => false,
 
         // Path to log file, if any.
-        'log' => false
+        'log' => false,
+
+        // URI index requests are redirected to.
+        'redirect' => false
     ],
 
     // Template settings.
@@ -36,9 +39,6 @@ $settings = [
         // Server port number. Default: 25
         'port' => 25
     ],
-
-    // URI index requests are redirected to.
-    'redirect' => false,
 
     // Actions handled by the application.
     'actions' => []

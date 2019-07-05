@@ -14,7 +14,7 @@ The PHP application generates a Javascript file based on the configuration descr
 <script src="https://example.edu/actions/button.js"></script>
 ```
 
-The Javascript file depends upon [jQuery](https://jquery.com/) being available, and must be loaded after jQuery is loaded. At BGSU, this Javascript is added to the `screens/botlogo.html` file for the Sierra WebPAC. Since it looks for particular information only available on detailed item records, it should be safe to include on other pages.
+At BGSU, this Javascript is added to the `screens/bib_display.html` file for the Sierra WebPAC.
 
 ### BGSU's Javascript as Example
 You may want to use your own application to handle applications instead of the version offered by this project. In that case, you may be interested in reviewing BGSU's copy of the Javascript file for adaption to your own system. It is online at:
@@ -47,7 +47,7 @@ The setting `app.debug` is primarly enabled when developing the application, and
 `app.redirect` should be configured to redirect users to your catalog or another site if they access the application directly instead of via the buttons added to the catalog.
 
 #### Template Settings
-These settings are primarly included to enable the use of a centralized collection of templates. If left as the default, you may edit the file `templates/page.html.twig` to configure the standard template used for each page. See below for further details about templates.
+These settings are primarly included to enable the use of a centralized collection of templates. If left as the default, you may edit the file `templates/page.html.twig` to configure the standard template used for each page.
 
 #### SMTP Settings
 `smtp.host` and `smtp.port` should be configured with the details for your SMTP server.

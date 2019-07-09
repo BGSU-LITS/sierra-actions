@@ -107,7 +107,7 @@ $container[Twig::class] = function (Container $container) {
     // Add Slim extension to the view.
     $view->addExtension(new \Slim\Views\TwigExtension(
         $container['router'],
-        $container['request']->getUri()
+        $container['request']->getUri()->withUserInfo('')
     ));
 
     return $view;

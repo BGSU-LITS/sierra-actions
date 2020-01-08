@@ -1,10 +1,6 @@
 {% set title = 'Schedule For Use' %}
 {% extends [settings.template.page, 'page.html.twig'] %}
 
-{% block logo_left %}
-<img src="/assets/img/systems-catalog.png" alt="University Libraries at BGSU Catalog" class="img-responsive" />
-{% endblock %}
-
 {% block content %}
 {{ parent() }}
 
@@ -17,11 +13,11 @@
 {% endif %}
 
 <form method="post">
-    <table>
+    <table class="table">
     {% for key, value in query %}
     {% if value and key != 'Status' and key != 'Permalink' %}
         <tr>
-            <th>
+            <th class="text-nowrap">
                 {{ key|replace({'_': ' '}) }}
             </th>
             <td>
@@ -36,16 +32,16 @@
     {% endfor %}
     </table>
 
-    <div class="row">
-        <div class="col-sm-4 form-group{% if 'name' in errors %} has-error{% endif %}">
-            <label class="control-label" for="name">Your Name</label>
+    <div class="form-flex">
+        <div{% if 'name' in errors %} class="has-failure"{% endif %}>
+            <label for="name">Your Name</label>
             {{
                 helper.input({
                     type: 'text',
                     name: 'name',
                     value: session.name,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'name',
                         required: true
                     }
@@ -53,15 +49,15 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-4 form-group{% if 'email' in errors %} has-error{% endif %}">
-            <label class="control-label" for="email">Your Email</label>
+        <div{% if 'email' in errors %} class="has-failure"{% endif %}>
+            <label for="email">Your Email</label>
             {{
                 helper.input({
                     type: 'email',
                     name: 'email',
                     value: session.email,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'email',
                         required: true
                     }
@@ -69,15 +65,15 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-4 form-group{% if 'tel' in errors %} has-error{% endif %}">
-            <label class="control-label" for="tel">Your Phone</label>
+        <div{% if 'tel' in errors %} class="has-failure"{% endif %}>
+            <label for="tel">Your Phone</label>
             {{
                 helper.input({
                     type: 'tel',
                     name: 'tel',
                     value: session.tel,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'tel',
                         required: true
                     }
@@ -85,52 +81,55 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-6 form-group{% if 'date' in errors %} has-error{% endif %}">
-            <label class="control-label" for="date">When do you plan to arrive?</label>
+    </div>
+    <div class="form-flex">
+        <div{% if 'date' in errors %} class="has-failure"{% endif %}>
+            <label for="date">When do you plan to arrive?</label>
             {{
                 helper.input({
                     type: 'text',
                     name: 'date',
                     value: session.date,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'date',
                         required: true
                     }
                 })
                 |raw
             }}
-            <span class="help-block">
+            <aside>
                 Your visit will be dependent upon <a href="http://www.bgsu.edu/library/about/library-hours.html" target="_blank">hours of operation</a>, expect an email to confirm your schedule
-            </span>
+            </aside>
         </div>
-        <div class="col-sm-6 form-group{% if 'from' in errors %} has-error{% endif %}">
-            <label class="control-label" for="from">Where are you traveling from?</label>
+        <div{% if 'from' in errors %} class="has-failure"{% endif %}>
+            <label for="from">Where are you traveling from?</label>
             {{
                 helper.input({
                     type: 'text',
                     name: 'from',
                     value: session.from,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'from',
                         required: true
                     }
                 })
                 |raw
             }}
-            <span class="help-block">
+            <aside>
                 Include city and state or country
-            </span>
+            </aside>
         </div>
-
-        <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
-            <label class="control-label" for="comments">Comments (include any special instructions)</label>
+    </div>
+    <div class="form-flex">
+        <div{% if 'comments' in errors %} class="has-failure"{% endif %}>
+            <label for="comments">Comments (include any special instructions)</label>
 
             {% if action == 'cac' or action == 'cac_offsite' %}
-            <p class="text-muted">If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</p>
+            <aside>If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</aside>
             {% elseif action == 'mlbssa' or action == 'mlbssa_offsite' %}
-            <p class="text-muted">If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</p>
+            <aside>If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</aside>
             {% endif %}
 
             {{
@@ -139,7 +138,7 @@
                     name: 'comments',
                     value: session.comments,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'comments'
                     }
                 })
@@ -152,7 +151,7 @@
             type: 'submit',
             name: false,
             value: 'Send Request',
-            attribs: {class: 'btn btn-primary'}
+            attribs: {class: 'button button-primary'}
         })
         |raw
     }}
@@ -168,15 +167,14 @@
 
 {% block styles %}
 {{ parent() }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.3.4/flatpickr.min.css">
 <link rel="stylesheet" href="{{ base_url() }}/css/form.css">
 {% endblock %}
 
 {% block scripts %}
 {{ parent() }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/2.3.4/flatpickr.min.js"></script>
+<script src="https://lib.bgsu.edu/template/1.1.1/flatpickr.js"></script>
 <script>
-jQuery('#date').flatpickr({
+bgsu_flatpickr.setup('#date', {
     altFormat: 'F j, Y',
     altInput: true,
     enable: [

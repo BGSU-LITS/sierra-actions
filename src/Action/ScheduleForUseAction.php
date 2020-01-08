@@ -125,7 +125,7 @@ class ScheduleForUseAction extends AbstractAction
                 } catch (RequestException $exception) {
                     // Part of the request failed, so notify user.
                     $args['messages'][] = [
-                        'level' => 'danger',
+                        'level' => 'failure',
                         'message' => $exception->getMessage()
                     ];
                 }

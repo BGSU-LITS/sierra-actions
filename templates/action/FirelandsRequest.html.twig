@@ -1,16 +1,12 @@
 {% set title = 'Firelands Request' %}
 {% extends [settings.template.page, 'page.html.twig'] %}
 
-{% block logo_left %}
-<img src="/assets/img/systems-catalog.png" alt="University Libraries at BGSU Catalog" class="img-responsive" />
-{% endblock %}
-
 {% block content %}
 {{ parent() }}
 
 {% if query %}
 <form method="post">
-    <table>
+    <table class="table">
     {% for key, value in query %}
     {% if value and key != 'Status' and key != 'Permalink' %}
         <tr>
@@ -29,16 +25,16 @@
     {% endfor %}
     </table>
 
-    <div class="row">
-        <div class="col-sm-4 form-group{% if 'name' in errors %} has-error{% endif %}">
-            <label class="control-label" for="name">Your Name</label>
+    <div class="form-flex">
+        <div{% if 'name' in errors %} class="has-failure"{% endif %}>
+            <label for="name">Your Name</label>
             {{
                 helper.input({
                     type: 'text',
                     name: 'name',
                     value: session.name,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'name',
                         required: true
                     }
@@ -46,15 +42,15 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-4 form-group{% if 'email' in errors %} has-error{% endif %}">
-            <label class="control-label" for="email">Your BGSU Email</label>
+        <div{% if 'email' in errors %} class="has-failure"{% endif %}>
+            <label for="email">Your Email</label>
             {{
                 helper.input({
                     type: 'email',
                     name: 'email',
                     value: session.email,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'email',
                         required: true
                     }
@@ -62,15 +58,15 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-4 form-group{% if 'id' in errors %} has-error{% endif %}">
-            <label class="control-label" for="id">Your BGSU ID Number</label>
+        <div{% if 'id' in errors %}  class="has-failure"{% endif %}>
+            <label for="id">Your BGSU ID Number</label>
             {{
                 helper.input({
                     type: 'text',
                     name: 'id',
                     value: session.id,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'id',
                         required: true
                     }
@@ -78,15 +74,17 @@
                 |raw
             }}
         </div>
-        <div class="col-sm-12 form-group{% if 'comments' in errors %} has-error{% endif %}">
-            <label class="control-label" for="comments">Comments</label>
+    </div>
+    <div class="form-flex">
+        <div{% if 'comments' in errors %} class="has-failure"{% endif %}>
+            <label for="comments">Comments</label>
             {{
                 helper.input({
                     type: 'textarea',
                     name: 'comments',
                     value: session.comments,
                     attribs: {
-                        class: 'form-control',
+                        class: 'field',
                         id: 'comments'
                     }
                 })
@@ -99,7 +97,7 @@
             type: 'submit',
             name: false,
             value: 'Send Request',
-            attribs: {class: 'btn btn-primary'}
+            attribs: {class: 'button button-primary'}
         })
         |raw
     }}

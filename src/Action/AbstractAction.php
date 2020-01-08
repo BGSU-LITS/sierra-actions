@@ -69,7 +69,7 @@ abstract class AbstractAction
      * Gets flash messages from previous request formatted for template.
      *
      * Each message is an array with two items:
-     * 'level' is either the string 'success' or 'danger'.
+     * 'level' is either the string 'success' or 'failure'.
      * 'message' is the string text of the message.
      *
      * @return array The flash messages from the previous request.
@@ -78,7 +78,7 @@ abstract class AbstractAction
     {
         $result = [];
 
-        foreach (['success', 'danger'] as $level) {
+        foreach (['success', 'failure'] as $level) {
             $messages = $this->flash->getMessage($level);
 
             if (is_array($messages)) {

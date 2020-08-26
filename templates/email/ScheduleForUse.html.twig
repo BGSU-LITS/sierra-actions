@@ -45,7 +45,11 @@
             </tr>
             <tr>
                 <th>Plans to Arrive</th>
+                {% if action == 'cac' or action == 'cac_offsite' %}
+                <td>{{ session.date }}</td>
+                {% else %}
                 <td>{{ session.date|date('F j, Y') }}</td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Traveling From</th>

@@ -195,7 +195,7 @@ class ScheduleForUseAction extends AbstractAction
         $mailSubject = $action['action'];
 
         // Add the date of the action to the subject if available.
-        if (!empty($args['session']['date'])) {
+        if ($args['window'] && !empty($args['session']['date'])) {
             $mailSubject .= ' ' .
                 date('Y-m-d', strtotime($args['session']['date']));
         }
@@ -276,12 +276,17 @@ class ScheduleForUseAction extends AbstractAction
         }
 
         // Check that the date is at least three week days in the future.
-        if (strtotime($args['session']['date']) < strtotime($args['window'])) {
-            $args['errors'][] = 'date';
+        if ($args['window']) {
+            if (
+                strtotime($args['session']['date']) <
+                strtotime($args['window'])
+            ) {
+                $args['errors'][] = 'date';
 
-            throw new RequestException(
-                'Please choose a date at least three weekdays from now.'
-            );
+                throw new RequestException(
+                    'Please choose a date further in the future.'
+                );
+            }
         }
     }
 }

@@ -207,10 +207,10 @@ class ScheduleForUseAction extends AbstractAction
         }
 
         // Set the recipient email to the address from the action.
-        $mailTo = $action['email'];
+        $mailTo = [$args['session']['email'] => $args['session']['name']];
 
         // Set the sender email from the session data.
-        $mailFrom = [$args['session']['email'] => $args['session']['name']];
+        $mailFrom = $action['email'];
 
         // Get the template for the current action.
         $template = 'email/' .

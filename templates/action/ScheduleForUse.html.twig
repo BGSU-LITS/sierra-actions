@@ -85,11 +85,6 @@
     <div class="form-flex">
         <div{% if 'date' in errors %} class="has-failure"{% endif %}>
             <label for="date">When do you plan to arrive?</label>
-            {% if action == 'cac' or action == 'cac_offsite' %}
-            <aside>
-                Due to the COVID-19 pandemic, the Center for Archival Collections is open by appointment only. Use the box below to let us know when you would like to visit. Please be aware that due to space constraints we may not be able to accommodate your request. A staff member will be in touch to set up your appointment.
-            </aside>
-            {% endif %}
             {{
                 helper.input({
                     type: 'text',
@@ -103,17 +98,10 @@
                 })
                 |raw
             }}
-            {% if not action == 'cac' or action == 'cac_offsite' %}
             <aside>
                 Your visit will be dependent upon <a href="http://www.bgsu.edu/library/about/library-hours.html" target="_blank">hours of operation</a>, expect an email to confirm your schedule.
             </aside>
-            {% endif %}
         </div>
-    {% if action == 'cac' or action == 'cac_offsite' %}
-    </div>
-    <div class="form-flex">
-    {% endif %}
-
         <div{% if 'from' in errors %} class="has-failure"{% endif %}>
             <label for="from">Where are you traveling from?</label>
             {{
@@ -139,10 +127,7 @@
             <label for="comments">Comments (include any special instructions)</label>
 
             {% if action == 'cac' or action == 'cac_offsite' %}
-            <aside>
-                <p>Please be aware that materials must be quarantined for 96 hours after use. As a result some collections may not be available. A staff member will be in touch to let you know whether your request can be accommodated.</p>
-                <p>If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</p>
-            </aside>
+            <aside>If you are requesting material from university archives or manuscripts collections, please list the specific box numbers you would like to consult (the catalog record provides a link to a more detailed finding aid listing the holdings of each box). Similarly, if you are interested in newspapers or other material that has been microfilmed, please provide an approximate date range for your research or reel numbers for local government resources, so we can have the appropriate reels pulled.</aside>
             {% elseif action == 'mlbssa' or action == 'mlbssa_offsite' %}
             <aside>If you are requesting periodical volumes that did not appear on the screen until you clicked the “View additional copies&hellip;” button, copy the volume information here. Similarly, if you are requesting many volumes of the same title, you may paste additional volume numbers here instead of submitting a request for each volume.</aside>
             {% endif %}

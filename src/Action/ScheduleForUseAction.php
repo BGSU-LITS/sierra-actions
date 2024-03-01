@@ -206,11 +206,11 @@ class ScheduleForUseAction extends AbstractAction
                 $args['query']['Title'];
         }
 
-        // Set the recipient email to the address from the action.
-        $mailTo = [$args['session']['email'] => $args['session']['name']];
+        // Set the sender email to the address from the action.
+        $mailFrom = [$args['session']['email'] => $args['session']['name']];
 
-        // Set the sender email from the session data.
-        $mailFrom = $action['email'];
+        // Set the recipient email from the session data.
+        $mailTo = $action['email'];
 
         // Get the template for the current action.
         $template = 'email/' .
@@ -220,9 +220,10 @@ class ScheduleForUseAction extends AbstractAction
             // Create a message with all of the provided data.
             $message = $this->mailer->createMessage()
                 ->setSubject($mailSubject)
-                ->setFrom($mailFrom)
+                ->setFrom('lits@bgsu.edu')
                 ->setTo($mailTo)
                 ->setCc($mailFrom)
+                ->setReplyTo($mailFrom)
                 ->setBody($this->view->fetch($template, $args), 'text/html');
 
             // Send the message.
